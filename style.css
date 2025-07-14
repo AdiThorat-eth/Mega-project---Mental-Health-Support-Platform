@@ -1,0 +1,886 @@
+@font-face {
+    font-family: 'plane light';
+    src: url(./font/plain-light-webfont.ttf);
+}
+@font-face {
+    font-family: 'silk serif';
+    src: url(./font/silkserif-regularitalic-webfont.ttf);
+}
+@font-face {
+    font-family: 'ShadowHand';
+    src: url(./font/ShadowHand.ttf);
+}
+@font-face {
+    font-family: 'Yantra One';
+    src: url(./font/YatraOne-Regular.ttf);
+}
+@font-face {
+    font-family: 'Pilowlava';
+    src: url(./font/Pilowlava-Atome.ttf);
+}
+@font-face {
+    font-family: 'Patriot Black';
+    src: url(./font/Patriot-Black.otf);
+}
+@font-face {
+    font-family: 'Rokkitt';
+    src: url(./font/Rokkitt-Regular.ttf);
+}
+@font-face {
+    font-family: 'Ostrich Sans';
+    src: url(./font/OstrichSans-Bold.otf);
+}
+@font-face {
+    font-family: 'Soria';
+    src: url(./font/soria-font.ttf);
+}
+@font-face {
+    font-family: 'Justus';
+    src: url(./font/Justus-Versalitas.ttf);
+}
+@font-face {
+    font-family: 'OnePiece';
+    src: url(./font/one\ piece\ font.ttf);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #2E2E2E;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #DFF3FC;
+    background: white;
+    transition: background-color 0.5s;
+}
+body.dark {
+    background: black;
+}
+
+.container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+@keyframes jumbo {
+  0% {
+    background-position: 0% 50%, 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%, 200% 50%;
+  }
+}
+
+
+.jumbo {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    
+    --stripes: repeating-linear-gradient(
+        100deg,
+        #fff 0%,
+        #fff 7%,
+        transparent 10%,
+        transparent 12%,
+        #fff 16%
+    );
+    
+    --stripesDark: repeating-linear-gradient(
+        100deg,
+        #000 0%,
+        #000 7%,
+        transparent 10%,
+        transparent 12%,
+        #000 16%
+    );
+    
+    --rainbow: repeating-linear-gradient(
+        100deg,
+        #60a5fa 10%,
+        #e879f9 15%,
+        #60a5fa 20%,
+        #5eead4 25%,
+        #60a5fa 30%
+    );
+
+    background-image: var(--stripes), var(--rainbow);
+    background-size: 300%, 200%;
+    background-position: 50% 50%, 50% 50%;
+
+    filter: invert(100%);
+    mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
+
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.jumbo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--stripes), var(--rainbow);
+    background-size: 200%, 100%;
+    background-attachment: fixed;
+    animation: jumbo 60s linear infinite;
+    mix-blend-mode: difference;
+}
+
+body.dark .jumbo {
+    background-image: var(--stripesDark), var(--rainbow);
+    filter: blur(10px) opacity(0.5) saturate(200%);
+}
+
+body.dark .jumbo::after {
+    background-image: var(--stripesDark), var(--rainbow);
+}
+
+.title {
+    position: relative;
+    font-size: 5vw;
+    font-weight: 700;
+    color: #333;
+    transition: color 0.5s;
+}
+
+body.dark .title {
+    color: white;
+    opacity: 0.8;
+}
+
+.badge {
+    margin-left: 0.5rem;
+    padding: 0.3em 0.6em;
+    border-radius: 10px;
+    background: currentColor;
+    font-size: 0.5em;
+    line-height: 1;
+}
+
+.badge-text {
+    color: white;
+}
+
+body.dark .badge-text {
+    color: black;
+}
+
+.button-wrapper {
+    margin-top: 20px;
+}
+
+.toggle-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 9999px;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    color: #333;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+body.dark .toggle-button {
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border-color: #555;
+}
+
+
+
+
+
+#curser {
+    height: 2.5vw;
+    width: 2.5vw;
+    border-radius: 50%;
+    position: fixed;
+    z-index: 999;
+    border: 4px solid #fff;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* Prevent cursor from blocking clicks */
+}
+
+#page0 {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
+    padding: 0;
+    color: #030303;
+    background-color: #EAE6F8;
+    transition: opacity 0.2s ease;
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    height: fit-content;
+    gap: 3vw;
+    color: #030303;
+    background-color: #EAE6F8;
+}
+
+#line1-part1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
+}
+
+#line1-part1 h5,
+#line1-part1 h6 {
+    font-size: 3vw;
+    font-weight: 100;
+    font-family: 'silk serif';
+}
+
+#line1-part1 h5 {
+    width: 5vw;
+    text-align: right;
+}
+
+.line h1 {
+    font-size: 6.5vw;
+    text-transform: uppercase;
+    font-weight: 900;
+    animation-name: anime2;
+    opacity: 0;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.line h2 {
+    font-size: 3vw;
+    text-transform: uppercase;
+    font-weight: 900;
+    animation-name: anime;
+    background-color: #EAE6F8;
+    opacity: 0;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes anime {
+    0% {
+        font-family: "plain light";
+        -webkit-text-stroke: 1px #000000;
+        color: #2E2E2E;
+        background-color: #EAE6F8;
+        opacity: 1;
+    }
+    50% {
+        font-family: 'Yantra One';
+        -webkit-text-stroke: 1px #000000;
+        color: transparent;
+        background-color: #EAE6F8;
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        background-color: #EAE6F8;
+    }
+}
+
+@keyframes anime2 {
+    0% {
+        font-family: 'ShadowHand';
+        -webkit-text-stroke: 1px #000000;
+        color: #2E2E2E;
+        background-color: #EAE6F8;
+        opacity: 1;
+    }
+    100% {
+        font-family: 'OnePiece';
+        -webkit-text-stroke: 1px #000000;
+        background-color: #EAE6F8;
+        color: transparent;
+        opacity: 1;
+    }
+}
+
+.line-animated {
+    height: 3.5vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.animated-text-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#page0 h2, #page0 h5, #page0 h6, #line1-part1, .animated-text-wrapper {
+    background-color: #EAE6F8;
+}
+#main {
+    position: relative;
+    z-index: 0;
+    /* background-color: #030303; */
+}
+
+#page1 {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    z-index: 100;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.3vw 5.5vw;
+    width: 100%;
+    /* background-color: #EAE6F8; */
+}
+
+
+#nav {
+    font-size: 2vw;
+    font-family: 'Patriot Black';
+}
+
+#nav2 {
+    display: flex;
+    align-items: center;
+    gap: 3vw;
+}
+
+#nav2 h4 {
+    font-family: 'Rokkitt';
+    font-size: 1.1vw;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#info {
+    font-size: 7vw;
+    text-align: center;
+    /* padding-top: 25vh; */
+    font-family: 'Ostrich Sans';
+    color: #2E2E2E;
+    z-index: 10;
+    position: relative;
+}
+
+#img {
+    height: 4vh;
+    width: 2vw;
+}
+
+/* .video-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.video-hero video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.video-hero h1#info {
+    position: relative;
+    z-index: 2;
+    font-size: 7vw;
+    color: #000000;
+    text-align: center;
+    padding-top: 25vh;
+    font-family: 'Ostrich Sans';
+} */
+
+/* PAGE 2 - Services */
+#page2 {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #DFF3FC;
+    position: relative;
+    padding: 10vh 8vw;
+}
+
+.page-title {
+    font-family: 'Soria';
+    font-size: 5vw;
+    text-align: center;
+    margin-bottom: 5vh;
+    color: #2E2E2E;
+    letter-spacing: 2px;
+}
+
+.services-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4vw;
+    width: 100%;
+}
+
+.service-card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 3vw;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    background-color: #F7FDFE;
+    transform: translateY(-10px);
+}
+
+.service-icon {
+    margin-bottom: 2vh;
+    background-color: #fff;
+}
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #C9D6D3;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+.service-card h3 {
+    font-family: 'Justus';
+    font-size: 2vw;
+    margin-bottom: 1.5vh;
+    background-color: #fff;
+}
+
+.service-card p {
+    font-family: 'Rokkitt';
+    background-color: #FFFFFF;
+    font-size: 1.1vw;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+/* PAGE 3 - Testimonials */
+#page3 {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #DFF3FC;
+    position: relative;
+    padding: 10vh 8vw;
+}
+
+.testimonials-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.testimonials-wrapper {
+    display: flex;
+    gap: 3vw;
+    width: 100%;
+    background-color: #DFF3FC;
+    overflow-x: hidden;
+}
+
+.testimonial {
+    background-color: #EAE6F8;
+    border-radius: 10px;
+    border: 3px solid #000000;
+    padding: 4vw 3vw;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+}
+
+.quote {
+    font-family: 'silk serif';
+    font-size: 8vw;
+    position: absolute;
+    top: -2vw;
+    left: 2vw;
+    opacity: 0.3;
+}
+
+.testimonial-text {
+    font-family: 'Rokkitt';
+    font-size: 1.5vw;
+    line-height: 1.6;
+    margin-bottom: 3vh;
+    flex-grow: 1;
+    background-color: #EAE6F8;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    background-color: #EAE6F8;
+}
+
+.author-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #C9D6D3;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.author-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.author-name {
+    font-family: 'Justus';    
+    font-size: 2vw;
+    background-color: #EAE6F8;
+}
+
+
+#pagex{
+    min-height : 100vh;
+    width : 100%;
+    background-color : #DFF3FC;
+    position : relative;
+    padding : 17vw, 2vw;
+ }
+ #pagex h1{
+        font-family: 'Soria';
+        font-size: 5vw;
+        text-align: center;
+        margin-bottom: 5vh;
+        color: #2E2E2E;
+        letter-spacing: 2px;
+ }
+ #pagex .underline{
+    margin-left: 28vw;
+ }
+ #image-div-container{
+    /* background-color:red; */
+    padding: 1vw;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+ } 
+ .image-div{
+    height: 24vw;
+    width: 24vw;
+    border-radius: 100px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-shrink: 0;
+    background-color: #3F7DF4;
+ }
+ .image-div img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+ }
+
+
+
+/* PAGE 4 - Contact */
+#page4 {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #DFF3FC;
+    position: relative;
+    padding: 10vh 0 0 0;
+}
+
+.contact-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-content {
+    display: flex;
+    width: 100%;
+    padding: 0 8vw 5vh 8vw;
+}
+
+.contact-left {
+    flex: 1;
+    padding-right: 5vw;
+}
+
+.contact-right {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-description {
+    font-family: 'Rokkitt';
+    font-size: 1.3vw;
+    margin-bottom: 5vh;
+    line-height: 1.6;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    width: 100%;
+}
+
+.form-input, .form-textarea {
+    background-color: #FFFFFF;
+    border: 1px solid #C9D6D3;
+    border-radius: 5px;
+    padding: 1.5vh 1vw;
+    font-family: 'Rokkitt';
+    font-size: 1vw;
+    color: #2E2E2E;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+
+.form-textarea {
+    min-height: 15vh;
+    resize: vertical;
+}
+
+.form-submit {
+    background-color: #6BBFD6;
+    color: #FFFFFF;
+    font-family: 'Justus';   
+    padding: 1.5vh 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2vh;
+}
+
+.form-submit:hover {
+    background-color: #4A9ACF;
+}
+
+.pattern-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.pattern-element {
+    width: 30vw;
+    height: 30vw;
+    border: 1px solid #C9D6D3;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pattern-element::before, .pattern-element::after {
+    content: '';
+    position: absolute;
+    border: 1px solid #C9D6D3;
+    border-radius: 50%;
+}
+
+.pattern-element::before {
+    width: 20vw;
+    height: 20vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pattern-element::after {
+    width: 10vw;
+    height: 10vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.footer {
+    width: 100%;
+    padding: 5vh 8vw;
+    background-color: #EAF6F9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5vh;
+}
+
+.footer-logo {
+    font-family: 'Patriot Black';
+    font-size: 2vw;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2vw;
+}
+
+.footer-links a {
+    font-family: 'Rokkitt';
+    font-size: 1vw;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+.footer-copyright {
+    font-family: 'Rokkitt';
+    font-size: 0.8vw;
+    opacity: 0.5;
+}
+
+/* Media queries for better responsiveness */
+@media (max-width: 768px) {
+    #curser {
+        display: none; /* Hide cursor on mobile */
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonials-wrapper {
+        flex-direction: column;
+    }
+    
+    .contact-content {
+        flex-direction: column;
+    }
+    
+    .contact-right {
+        display: none;
+    }
+    
+    .page-title {
+        font-size: 10vw;
+    }
+    
+    .service-card h3 {
+        font-size: 6vw;
+    }
+    
+    .service-card p {
+        font-size: 4vw;
+    }
+    
+    .testimonial-text {
+        font-size: 4vw;
+    }
+    
+    .contact-description {
+        font-size: 4vw;
+    }
+    
+    .form-submit {
+        font-size: 5vw;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 3vh;
+        text-align: center;
+    }
+    
+    .footer-logo {
+        font-size: 8vw;
+    }
+    
+    .footer-links {
+        justify-content: center;
+    }
+    
+    .footer-links a {
+        font-size: 4vw;
+    }
+    
+    .footer-copyright {
+        font-size: 3vw;
+    }
+}
