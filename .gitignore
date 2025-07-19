@@ -1,13 +1,7 @@
-# Maven
-/target/
-
-# IntelliJ
+# Combined .gitignore (choose wisely)
+target/
+*.log
+*.class
+*.jar
 .idea/
 *.iml
-
-# Logs
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
