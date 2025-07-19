@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mantra - Mental Health Resources</title>
+    <link rel="shortcut icon" href="./android-chrome-512x512.ico.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Additional styles specific to resources page */
+      .resources-container {
+        width: 100%;
+        padding: 10vh 8vw;
+      }
+      
+      .resources-header {
+        text-align: center;
+        margin-bottom: 5vh;
+      }
+      
+      .resources-header h1 {
+        font-family: 'Soria';
+        font-size: 5vw;
+        margin-bottom: 2vh;
+        color: #2E2E2E;
+      }
+      
+      .resources-header p {
+        font-family: 'Rokkitt';
+        font-size: 1.3vw;
+        max-width: 70%;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+      
+      .resources-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 2vw;
+        margin-bottom: 5vh;
+      }
+      
+      .tab {
+        padding: 1.2vh 2vw;
+        background-color: #EAE6F8;
+        border-radius: 30px;
+        font-family: 'Justus';
+        font-size: 1.2vw;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+      
+      .tab.active {
+        background-color: #6BBFD6;
+        color: white;
+      }
+      
+      .tab:hover {
+        border: 2px solid #6BBFD6;
+      }
+      
+      .resources-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3vw;
+        width: 100%;
+      }
+      
+      .resource-card {
+        background-color: #FFFFFF;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      
+      .resource-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      }
+      
+      .resource-thumbnail {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+      }
+      
+      .resource-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .resource-type {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 0.5vh 1vw;
+        border-radius: 20px;
+        font-family: 'Rokkitt';
+        font-size: 0.8vw;
+        color: white;
+      }
+      
+      .type-pdf {
+        background-color: #FF6B6B;
+      }
+      
+      .type-video {
+        background-color: #4A9ACF;
+      }
+      
+      .type-audio {
+        background-color: #6BCF4A;
+      }
+      
+      .resource-info {
+        padding: 2vw;
+      }
+      
+      .resource-info h3 {
+        font-family: 'Justus';
+        font-size: 1.5vw;
+        margin-bottom: 1vh;
+      }
+      
+      .resource-info p {
+        font-family: 'Rokkitt';
+        font-size: 1vw;
+        margin-bottom: 2vh;
+        line-height: 1.5;
+        color: #666;
+      }
+      
+      .resource-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Rokkitt';
+        font-size: 0.9vw;
+        color: #888;
+      }
+      
+      .resource-button {
+        padding: 1vh 1.5vw;
+        background-color: #6BBFD6;
+        color: white;
+        border-radius: 5px;
+        font-family: 'Justus';
+        font-size: 1vw;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 1vh;
+      }
+      
+      .resource-button:hover {
+        background-color: #4A9ACF;
+      }
+      
+      .search-container {
+        margin-bottom: 4vh;
+        position: relative;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .search-input {
+        width: 100%;
+        padding: 1.5vh 1vw;
+        border-radius: 30px;
+        border: 2px solid #C9D6D3;
+        font-family: 'Rokkitt';
+        font-size: 1.1vw;
+        padding-left: 3vw;
+      }
+      
+      .search-icon {
+        position: absolute;
+        left: 1vw;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+      }
+      
+      .content-section {
+        display: none;
+      }
+      
+      .content-section.active {
+        display: grid;
+      }
+      
+      .featured-resources {
+        margin-bottom: 5vh;
+      }
+      
+      .featured-title {
+        font-family: 'Justus';
+        font-size: 2vw;
+        margin-bottom: 3vh;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .featured-title:after {
+        content: '';
+        position: absolute;
+        bottom: -1vh;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: #6BBFD6;
+      }
+      
+      @media (max-width: 768px) {
+        .resources-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .resources-tabs {
+          flex-wrap: wrap;
+        }
+        
+        .tab {
+          font-size: 3vw;
+          padding: 1vh 4vw;
+        }
+        
+        .resources-header h1 {
+          font-size: 10vw;
+        }
+        
+        .resources-header p {
+          font-size: 4vw;
+          max-width: 90%;
+        }
+        
+        .resource-info h3 {
+          font-size: 5vw;
+        }
+        
+        .resource-info p {
+          font-size: 3.5vw;
+        }
+        
+        .resource-meta {
+          font-size: 3vw;
+        }
+        
+        .resource-button {
+          font-size: 3.5vw;
+        }
+        
+        .search-input {
+          font-size: 3.5vw;
+        }
+        
+        .featured-title {
+          font-size: 6vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="curser"></div>
+    <div id="page0">
+      <div class="line">
+        <div id="line1-part1">
+          <h5>00</h5>
+          <h6>- 100</h6>
+        </div>
+      </div>
+      <div class="line" id="linelo">
+        <h1>Loading...</h1>
+      </div>
+      <div class="line line-animated">
+        <div class="animated-text-wrapper">
+          <h2>Now</h2>
+        </div>
+      </div>
+    </div>
+    <div id="main">
+      <div id="navbar">
+        <div>
+          <img
+            id="img"
+            src="./android-chrome-512x512.ico.png"
+            alt=""
+            srcset=""
+          />
+        </div>
+        <div id="nav">Mantra</div>
+        <div id="nav2">
+          <a href="./index.html">Home</a>
+          <a href="./signup.html">Register</a>
+          <a href="./login.html">Sign in</a>
+        </div>
+      </div>
+
+      <div class="resources-container">
+        <div class="resources-header">
+          <h1>Mental Health Resources</h1>
+          <p>Discover our collection of carefully curated resources to support your mental health journey. From books and articles to videos and guided meditations, we've compiled the best materials to help you thrive.</p>
+        </div>
+
+        <div class="search-container">
+          <div class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <input type="text" class="search-input" placeholder="Search for resources..." id="search-resources">
+        </div>
+
+        <div class="featured-resources">
+          <h2 class="featured-title">Featured Resources</h2>
+          <div class="resources-content">
+            <div class="resource-card">
+              <div class="resource-thumbnail">
+                <img src="/api/placeholder/400/300" alt="The Mindful Way Through Depression">
+                <div class="resource-type type-pdf">PDF Book</div>
+              </div>
+              <div class="resource-info">
+                <h3>The Mindful Way Through Depression</h3>
+                <p>Learn how mindfulness-based cognitive therapy can help you break the cycle of chronic unhappiness.</p>
+                <div class="resource-meta">
+                  <span>230 pages</span>
+                  <span>4.8 ★</span>
+                </div>
+                <a href="#" class="resource-button">Download PDF</a>
+              </div>
+            </div>
+            <div class="resource-card">
+              <div class="resource-thumbnail">
+                <img src="/api/placeholder/400/300" alt="Guided Meditation for Anxiety">
+                <div class="resource-type type-video">Video</div>
+              </div>
+              <div class="resource-info">
+                <h3>Guided Meditation for Anxiety</h3>
+                <p>A 20-minute guided meditation session to help calm your mind and reduce anxiety symptoms.</p>
+                <div class="resource-meta">
+                  <span>20 minutes</span>
+                  <span>4.9 ★</span>
+                </div>
+                <a href="#" class="resource-button">Watch Now</a>
+              </div>
+            </div>
+            <div class="resource-card">
+              <div class="resource-thumbnail">
+                <img src="/api/placeholder/400/300" alt="Overcoming Trauma Audiobook">
+                <div class="resource-type type-audio">Audiobook</div>
+              </div>
+              <div class="resource-info">
+                <h3>Overcoming Trauma</h3>
+                <p>A comprehensive guide to understanding and healing from trauma through mindfulness practices.</p>
+                <div class="resource-meta">
+                  <span>8 hours 30 min</span>
+                  <span>4.7 ★</span>
+                </div>
+                <a href="#" class="resource-button">Listen Now</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resources-tabs">
+          <div class="tab active" data-tab="all">All Resources</div>
+          <div class="tab" data-tab="books">Books & PDFs</div>
+          <div class="tab" data-tab="videos">Videos</div>
+          <div class="tab" data-tab="audio">Audiobooks</div>
+        </div>
+
+        <div class="content-section active" id="all-content">
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="The Mindful Way Through Depression">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>The Mindful Way Through Depression</h3>
+              <p>Learn how mindfulness-based cognitive therapy can help you break the cycle of chronic unhappiness.</p>
+              <div class="resource-meta">
+                <span>230 pages</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Guided Meditation for Anxiety">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Guided Meditation for Anxiety</h3>
+              <p>A 20-minute guided meditation session to help calm your mind and reduce anxiety symptoms.</p>
+              <div class="resource-meta">
+                <span>20 minutes</span>
+                <span>4.9 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Overcoming Trauma Audiobook">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Overcoming Trauma</h3>
+              <p>A comprehensive guide to understanding and healing from trauma through mindfulness practices.</p>
+              <div class="resource-meta">
+                <span>8 hours 30 min</span>
+                <span>4.7 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Cognitive Behavioral Therapy Workbook">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>CBT Workbook</h3>
+              <p>A practical workbook with exercises and worksheets to help you implement cognitive behavioral therapy techniques.</p>
+              <div class="resource-meta">
+                <span>156 pages</span>
+                <span>4.6 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Sleep Well Meditation">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Sleep Well Meditation</h3>
+              <p>A collection of guided meditations designed to help you fall asleep faster and improve sleep quality.</p>
+              <div class="resource-meta">
+                <span>3 hours 15 min</span>
+                <span>4.9 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Understanding Anxiety Workshop">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Understanding Anxiety Workshop</h3>
+              <p>A comprehensive workshop on understanding anxiety triggers and developing coping strategies.</p>
+              <div class="resource-meta">
+                <span>1 hour 45 min</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section" id="books-content">
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="The Mindful Way Through Depression">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>The Mindful Way Through Depression</h3>
+              <p>Learn how mindfulness-based cognitive therapy can help you break the cycle of chronic unhappiness.</p>
+              <div class="resource-meta">
+                <span>230 pages</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Cognitive Behavioral Therapy Workbook">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>CBT Workbook</h3>
+              <p>A practical workbook with exercises and worksheets to help you implement cognitive behavioral therapy techniques.</p>
+              <div class="resource-meta">
+                <span>156 pages</span>
+                <span>4.6 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Emotional Intelligence">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>Emotional Intelligence</h3>
+              <p>Discover how developing your emotional intelligence can improve your mental health and relationships.</p>
+              <div class="resource-meta">
+                <span>285 pages</span>
+                <span>4.7 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Daily Mindfulness Journal">
+              <div class="resource-type type-pdf">PDF Book</div>
+            </div>
+            <div class="resource-info">
+              <h3>Daily Mindfulness Journal</h3>
+              <p>A printable journal with prompts to help you practice mindfulness and gratitude every day.</p>
+              <div class="resource-meta">
+                <span>92 pages</span>
+                <span>4.9 ★</span>
+              </div>
+              <a href="#" class="resource-button">Download PDF</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section" id="videos-content">
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Guided Meditation for Anxiety">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Guided Meditation for Anxiety</h3>
+              <p>A 20-minute guided meditation session to help calm your mind and reduce anxiety symptoms.</p>
+              <div class="resource-meta">
+                <span>20 minutes</span>
+                <span>4.9 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Understanding Anxiety Workshop">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Understanding Anxiety Workshop</h3>
+              <p>A comprehensive workshop on understanding anxiety triggers and developing coping strategies.</p>
+              <div class="resource-meta">
+                <span>1 hour 45 min</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Yoga for Mental Health">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Yoga for Mental Health</h3>
+              <p>A gentle yoga practice designed specifically to reduce stress and improve mental wellbeing.</p>
+              <div class="resource-meta">
+                <span>45 minutes</span>
+                <span>4.7 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Breathing Techniques for Stress">
+              <div class="resource-type type-video">Video</div>
+            </div>
+            <div class="resource-info">
+              <h3>Breathing Techniques for Stress</h3>
+              <p>Learn practical breathing exercises that can help you manage stress and anxiety in any situation.</p>
+              <div class="resource-meta">
+                <span>30 minutes</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Watch Now</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-section" id="audio-content">
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Overcoming Trauma Audiobook">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Overcoming Trauma</h3>
+              <p>A comprehensive guide to understanding and healing from trauma through mindfulness practices.</p>
+              <div class="resource-meta">
+                <span>8 hours 30 min</span>
+                <span>4.7 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Sleep Well Meditation">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Sleep Well Meditation</h3>
+              <p>A collection of guided meditations designed to help you fall asleep faster and improve sleep quality.</p>
+              <div class="resource-meta">
+                <span>3 hours 15 min</span>
+                <span>4.9 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Mindfulness for Beginners">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Mindfulness for Beginners</h3>
+              <p>An introduction to mindfulness meditation with guided practices for cultivating awareness and presence.</p>
+              <div class="resource-meta">
+                <span>5 hours 20 min</span>
+                <span>4.8 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-thumbnail">
+              <img src="/api/placeholder/400/300" alt="Positive Affirmations">
+              <div class="resource-type type-audio">Audiobook</div>
+            </div>
+            <div class="resource-info">
+              <h3>Positive Affirmations</h3>
+              <p>Daily affirmations to help rewire your thought patterns and build a more positive mindset.</p>
+              <div class="resource-meta">
+                <span>2 hours 40 min</span>
+                <span>4.6 ★</span>
+              </div>
+              <a href="#" class="resource-button">Listen Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="page4">
+        <div class="contact-container">
+          <div class="footer">
+            <div class="footer-logo">Mantra</div>
+            <div class="footer-links">
+              <a href="./index.html">Home</a>
+              <a href="#">About</a>
+              <a href="#">Services</a>
+              <a href="./resources.html">Resources</a>
+              <a href="#">Contact</a>
+            </div>
+            <div class="footer-copyright">
+              © 2025 Mantra. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" integrity="sha512-f6bQMg6nkSRw/xfHw5BCbISe/dJjXrVGfz9BSDwhZtiErHwk7ifbmBEtF9vFW8UNIQPhV2uEFVyI/UHob9r7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" integrity="sha512-AcqPGqrrAEtEwe+ADO5R8RbdFi7tuU7b/A2cJJH0Im0D18NRk5p5s4B3E5PMuO81KFw0ClN7J5SHVUJz7KOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.155.0/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/automat/controlkit.js@master/bin/controlKit.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sheryjs/dist/Shery.js"></script>
+    <script src="script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        const contentSections = document.querySelectorAll('.content-section');
+        
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Hide all content sections
+            contentSections.forEach(section => {
+              section.classList.remove('active');
+            });
+            
+            // Show the corresponding content section
+            const tabId = tab.getAttribute('data-tab');
+            document.getElementById(`${tabId}-content`).classList.add('active');
+          });
+        });
+        
+        // Search functionality
+        const searchInput = document.getElementById('search-resources');
+        const resourceCards = document.querySelectorAll('.resource-card');
+        
+        searchInput.addEventListener('input', () => {
+          const searchTerm = searchInput.value.toLowerCase();
+          
+          resourceCards.forEach(card => {
+            const title = card.querySelector('h3').textContent.toLowerCase();
+            const description = card.querySelector('p').textContent.toLowerCase();
+            
+            if (title.includes(searchTerm) || description.includes(searchTerm)) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+        
+        // Hover effects for resource cards
+        resourceCards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              y: -10,
+              boxShadow: '0 15px 30px rgba(0,0,0,0.15)',
+              duration: 0.3
+            });
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              y: 0,
+              boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+              duration: 0.3
+            });
+          });
+        });
+        
+        // Add animation for resource cards on scroll
+        const animateResourceCards = () => {
+          gsap.set('.resource-card', { y: 50, opacity: 0 });
+          
+          ScrollTrigger.batch('.resource-card', {
+            onEnter: batch => gsap.to(batch, {
+              opacity: 1,
+              y: 0,
+              stagger: 0.15,
+              duration: 0.8,
+              ease: 'power3.out'
+            }),
+            scroller: '#main'
+        }
